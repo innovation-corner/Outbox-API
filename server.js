@@ -7,7 +7,7 @@ const passport = require("passport");
 require("./config/passport");
 
 /** Setting up environment variable */
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 const app = express();
 
 /** set up middlewares */
