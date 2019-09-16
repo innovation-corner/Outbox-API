@@ -1,24 +1,20 @@
 const Sequelize = require('sequelize');
 const database = require('./config');
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 let sequelize;
 
-if (process.env.CLEAR_DATABASE_URL) {
+if (process.env.DATABASE_URL) {
 
     /** @type {Sequelize} [database connection for heroku production] */
-    sequelize = new Sequelize(process.env.CLEAR_DATABASE_URL, {
-        dialect: 'mysql',
-        protocol: 'mysql',
-        port: 5432,
-        host: "<heroku host>",
-        logging: true //false
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+      dialect:  'postgres',
+      protocol: 'postgres',
+      port:     5432,
+      host:     "<heroku host>",
+      logging:  true //false
     });
   
   } else {
-
     /** @type {Sequelize} [database connection for development env] */
     sequelize = new Sequelize(
         database.development.database,
