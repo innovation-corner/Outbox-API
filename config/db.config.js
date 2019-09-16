@@ -3,17 +3,15 @@ const database = require('./config');
 
 let sequelize;
 
-if (process.env.CLEAR_DATABASE_URL) {
-
-    /** @type {Sequelize} [database connection for heroku production] */
-    sequelize = new Sequelize(process.env.CLEAR_DATABASE_URL, {
-        dialect: 'mysql',
-        protocol: 'mysql',
-        port: 5432,
-        host: "<heroku host>",
-        logging: true //false
-    });
-
+if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
+    // the application is executed on Heroku ... use the postgres database
+    sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+      dialect:  'postgres',
+      protocol: 'postgres',
+      port:     match[4],
+      host:     match[3],
+      logging:  true //false
+    })
 } else {
 
     /** @type {Sequelize} [database connection for development env] */
