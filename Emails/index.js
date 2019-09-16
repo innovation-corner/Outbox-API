@@ -2,7 +2,7 @@ const EmailService = require("../Services/EmailService");
 module.exports = {
   async registrationEmail(data) {
     try {
-      const dev = process.env === "development";
+      const dev = app.settings.env === "development";
       let base = "https://useoutbox.com";
       if (dev){
         base = 'http://localhost:5000'
