@@ -2,11 +2,15 @@ const EmailService = require("../Services/EmailService");
 module.exports = {
   async registrationEmail(data) {
     try {
+      const dev = app.settings.env === "development";
+      let base = "https://useoutbox.com";
+      if (dev){
+        base = 'http://localhost:5000'
+      }
+
       data.subject = "Welcome To Outbox";
       data.text = "We are glad to have you on board";
-      data.html = `<p> Please click this <a href="useoutbox.com/complete-registraion/${
-        data.token
-      }">link</a> 
+      data.html = `<p> Please click this <a href="${base}/email-confirmation/${data.token}">link</a> 
         to complete you registration</p>`;
       EmailService.sendMail(data);
     } catch (err) {
