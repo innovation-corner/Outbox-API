@@ -1,4 +1,6 @@
 const EmailService = require("../Services/EmailService");
+const express = require('express');
+const app = express();
 module.exports = {
   async registrationEmail(data) {
     try {

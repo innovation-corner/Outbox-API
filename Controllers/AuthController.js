@@ -6,7 +6,7 @@
 
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
-const User  = require("../models/user");
+const User = require("../models/user");
 const Business = require("../models/business");
 const Location = require("../models/location");
 const JwtService = require("../modules/auth.module");
@@ -55,8 +55,8 @@ module.exports = {
 
       return res.status(200).json({
         success: true,
-        message: "registration successful", 
-        user 
+        message: "registration successful",
+        user
       });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
@@ -83,8 +83,11 @@ module.exports = {
       const responseObj = { user, token };
       return res
         .status(200)
-        .json({ message: "verification successful", success: true, responseObj });
-
+        .json({
+          message: "verification successful",
+          success: true,
+          responseObj
+        });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }
@@ -111,13 +114,11 @@ module.exports = {
 
         await User.update(data, { where: { id: user.id } });
 
-        return res
-          .status(200)
-          .json({ 
-            success: true,
-            message: "login successful", 
-            payload
-          });
+        return res.status(200).json({
+          success: true,
+          message: "login successful",
+          payload
+        });
       })(req, res);
     } catch (err) {
       return res.status(401).json({ message: "An error occured", err });
@@ -170,8 +171,10 @@ module.exports = {
         return res.status(400).json({ message: "invalid code" });
       }
 
-      return res.status(200).json({ 
-        message: "valid code", user });
+      return res.status(200).json({
+        message: "valid code",
+        user
+      });
     } catch (error) {
       return res.status(400).json({ message: "An error occured" });
     }
@@ -208,6 +211,8 @@ module.exports = {
       return res
         .status(200)
         .json({ message: "Password reset successfully", user });
-    } catch {}
+    } catch (e) {
+      return res.status(400).json({ message: "An error occured" });
+    }
   }
 };
