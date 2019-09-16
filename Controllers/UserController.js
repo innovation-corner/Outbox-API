@@ -1,8 +1,8 @@
 const passport = require("passport");
-const moment = require('moment');
+const moment = require("moment");
 const User = require("../models/user");
 const Business = require("../models/business");
-const Attendee  = require("../models/attendee");
+const Attendee = require("../models/attendee");
 const JwtService = require("../modules/auth.module");
 const Email = require("../Emails");
 // const { Op } = require("sequelize");
@@ -10,7 +10,7 @@ const Email = require("../Emails");
 module.exports = {
   async inviteUser(req, res) {
     try {
-      const { email, firstname, location, role, gender } = req.body;
+      const { email, firstName, lastName, location, role, gender } = req.body;
       const { businessId, id } = req.user;
 
       const checkEmail = await User.findOne({ where: { email } });
@@ -33,7 +33,8 @@ module.exports = {
 
       const data = {
         email,
-        fullname: firstname,
+        firstName,
+        lastName,
         locationId: location,
         role,
         gender,
@@ -71,11 +72,11 @@ module.exports = {
           return res.status(400).json({ message: "invalid password" });
         }
       }
-      
+
       await User.update(data, {
         where: { id }
       });
-      const updatedUser = await User.findOne({where:{id}})
+      const updatedUser = await User.findOne({ where: { id } });
 
       return res.status(200).json({ message: "user updated", updatedUser });
     } catch (error) {
@@ -118,7 +119,7 @@ module.exports = {
 
       const meetings = await Attendee.findAll({ where: query });
 
-      console.log(meetings)
+      console.log(meetings);
       if (meetings.length) {
         meetings.forEach(meeting => {
           if (
