@@ -6,7 +6,7 @@ dotenv.config();
 
 let sequelize;
 
-if (process.env.DATABASE_URL) {
+if (process.env.CLEAR_DATABASE_URL) {
 
     /** @type {Sequelize} [database connection for heroku production] */
     sequelize = new Sequelize(process.env.CLEAR_DATABASE_URL, {
