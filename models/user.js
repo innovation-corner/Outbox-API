@@ -9,23 +9,23 @@ const User = sequelize.define(
   {
     firstName: {
       type: DataTypes.STRING,
-      validate: {
-        notNull: { msg: "firstname is required" }
-      }
+      // validate: {
+      //   notNull: { msg: "firstname is required" }
+      // }
     },
     lastName: {
       type: DataTypes.STRING,
-      validate: {
-        notNull: { msg: "firstname is required" }
-      }
+      // validate: {
+      //   notNull: { msg: "firstname is required" }
+      // }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isEmail: { msg: "Invalid email" },
-        notNull: { msg: "email is required" }
-      },
+      // validate: {
+      //   isEmail: { msg: "Invalid email" },
+      //   notNull: { msg: "email is required" }
+      // },
       unique: {
         args: true,
         msg: "Email address already in use!"
@@ -34,9 +34,9 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notNull: { msg: "password is required" }
-      }
+      // validate: {
+      //   notNull: { msg: "password is required" }
+      // }
     },
     verificationCode: {
       type: DataTypes.STRING
