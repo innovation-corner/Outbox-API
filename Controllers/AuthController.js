@@ -15,9 +15,9 @@ const Email = require("../Emails");
 module.exports = {
   async registerAdmin(req, res) {
     try {
-      const { email, password, businessName } = req.body;
+      const { email, password, businessName, firstName, lastName } = req.body;
       let orgDetails = { name: businessName, email };
-      let data = { email, password };
+      let data = { email, password, firstName, lastName };
 
       const checkUserEmail = await User.findOne({
         where: { email }
