@@ -3,20 +3,26 @@ const DataTypes = require("sequelize");
 const sequelize = require("../config/db.config");
 const JwtService = require("../modules/auth.module");
 const bcrypt = require("bcryptjs");
+const Booking = require("./booking");
+const Location = require("./location");
+const Attendee = require("./attendee");
+const Business = require("./business");
 
 const User = sequelize.define(
   "Users",
   {
     firstName: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         notNull: { msg: "firstname is required" }
       }
     },
     lastName: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        notNull: { msg: "firstname is required" }
+        notNull: { msg: "lastname is required" }
       }
     },
     email: {
@@ -45,7 +51,6 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-
     role: {
       type: DataTypes.ENUM("systemAdmin", "subAdmin", "user"),
       defaultValue: "user"
@@ -78,20 +83,22 @@ User.beforeUpdate(user => {
   }
 });
 
-User.associate = function(models) {
-  // associations can be defined here
-  User.belongsTo(models.Business, {
-    foreignKey: "businessId",
-    as: "business"
-  });
-  User.hasMany(models.Attendee, {
-    foreignKey: "userId",
-    as: "user"
-  });
-  User.hasMany(models.Booking, {
-    foreignKey: "bookedBy",
-    as: "bookedBy"
-  });
-};
+
+User.belongsTo(Business, {
+  foreignKey: "businessId",
+  as: "business"
+});
+User.hasMany(Attendee, {
+  foreignKey: "userId",
+  as: "user"
+});
+User.belongsTo(Location, {
+  foreignKey: "locationId",
+  as: "location"
+});
+User.hasMany(Booking, {
+  foreignKey: "bookedBy",
+  as: "bookedBy"
+});
 
 module.exports = User;

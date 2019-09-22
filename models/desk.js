@@ -16,10 +16,10 @@ const Desk = sequelize.define('Desks', {
 
 Desk.associate = function(models) {
   // associations can be defined here
-  Desk.belongsTo(models.Location, {
-    foreignKey: "locationId",
-    onDelete: "CASCADE"
-  });
+  // Desk.belongsTo(models.Location, {
+  //   foreignKey: "locationId",
+  //   onDelete: "CASCADE"
+  // });
   Desk.hasMany(models.Booking, {
     foreignKey: "deskId",
     as: "bookings"
