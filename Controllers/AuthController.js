@@ -11,6 +11,7 @@ const Business = require("../models/business");
 const Location = require("../models/location");
 const JwtService = require("../modules/auth.module");
 const Email = require("../Emails");
+const _ = require("lodash");
 
 module.exports = {
   async registerAdmin(req, res) {
@@ -18,6 +19,16 @@ module.exports = {
       const { email, password, businessName, firstName, lastName } = req.body;
       let orgDetails = { name: businessName, email };
       let data = { email, password, firstName, lastName };
+
+      if (
+        _.isEmpty(email) ||
+        _.isEmpty(password) ||
+        _.isEmpty(businessName) ||
+        _.isEmpty(firstName) ||
+        _.isEmpty(lastName)
+      ) {
+        throw new Error("incomplete parameters");
+      }
 
       const checkUserEmail = await User.findOne({
         where: { email }
@@ -59,7 +70,10 @@ module.exports = {
         user
       });
     } catch (error) {
-      return res.status(400).json({ message: "an error occured", error });
+      console.log(error);
+      return res
+        .status(400)
+        .json({ message: "an error occured", error: error.toString() });
     }
   },
 
@@ -67,29 +81,33 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      await User.update(
-        { isVerified: true },
-        { where: { verificationCode: id } }
-      );
       const user = await User.findOne({
-        where: { verificationCode: id },
-        include: [{ all: true }]
+        where: { verificationCode: id }
       });
+
+      if (!user) {
+        return res.status(401).json({ message: "Invalid Code"});
+      }
+
+      user.isVerified = true
+      await user.save()
+
       const token = await JwtService.issueToken({
         id: user.id,
         role: user.role,
         email: user.email
       });
       const responseObj = { user, token };
-      return res
-        .status(200)
-        .json({
-          message: "verification successful",
-          success: true,
-          responseObj
-        });
+      return res.status(200).json({
+        message: "verification successful",
+        success: true,
+        responseObj
+      });
     } catch (error) {
-      return res.status(400).json({ message: "an error occured", error });
+      console.log(error);
+      return res
+        .status(400)
+        .json({ message: "an error occured", error: error.toString() });
     }
   },
 

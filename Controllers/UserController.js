@@ -5,6 +5,7 @@ const Business = require("../models/business");
 const Attendee = require("../models/attendee");
 const JwtService = require("../modules/auth.module");
 const Email = require("../Emails");
+const _ = require('lodash')
 // const { Op } = require("sequelize");
 
 module.exports = {
@@ -12,6 +13,16 @@ module.exports = {
     try {
       const { email, firstName, lastName, location, role, gender } = req.body;
       const { businessId, id } = req.user;
+
+      if (
+        _.isEmpty(email) ||
+        _.isEmpty(gender) ||
+        _.isEmpty(location) ||
+        _.isEmpty(firstName) ||
+        _.isEmpty(lastName)
+      ) {
+        throw new Error("incomplete parameters");
+      }
 
       const checkEmail = await User.findOne({ where: { email } });
       const generateCode = (length, chars) => {
@@ -53,7 +64,7 @@ module.exports = {
 
       return res.status(200).json({ message: "User added", user });
     } catch (err) {
-      return res.status(400).json({ message: "An error occurred", err });
+      return res.status(400).json({ message: "An error occurred", err:err.toString() });
     }
   },
 
