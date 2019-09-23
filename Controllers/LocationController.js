@@ -2,11 +2,12 @@ const User = require("../models/user");
 const Room = require("../models/room");
 const Location = require("../models/location");
 const { Op } = require("sequelize");
+const _ = require("lodash");
 
 module.exports = {
   async addLocation(req, res) {
     try {
-      const { name, info, contactNumber, contactEmail, admin } = req.body;
+      const { name, info, phonenumber, email, admin } = req.body;
       const { businessId, id } = req.user;
 
       if (req.user.role !== "systemAdmin" && req.user.role !== "subAdmin") {
@@ -16,13 +17,23 @@ module.exports = {
       const data = {
         name,
         info,
-        email: contactEmail,
-        phoneNumber: contactNumber,
+        email,
+        phoneNumber:phonenumber,
         businessId
       };
-      const location = await Location.create(data);
 
-      if (!req.user.locationId) {
+      if (
+        _.isEmpty(email) ||
+        _.isEmpty(info) ||
+        _.isEmpty(name)
+      ) {
+        throw new Error("incomplete parameters");
+      }
+
+      const location = await Location.create(data);
+const user = await User.findOne({where:{id}})
+
+      if (!user.locationId) {
         await User.update({ locationId: location.id }, { where: { id } });
       }
 
@@ -33,7 +44,7 @@ module.exports = {
 
       return res.status(200).json({ message: "location added", location });
     } catch (err) {
-      return res.status(400).json({ message: "An error occurred", err });
+      return res.status(400).json({ message: "An error occurred", err:err.toString() });
     }
   },
 
@@ -68,13 +79,12 @@ module.exports = {
         return res.status(400).json({ message: "invalid location" });
       }
 
-      const rooms = await Room.findAll({ where: {locationId:id} });
-      const data = {location:reqLocation, rooms}
+      const rooms = await Room.findAll({ where: { locationId: id } });
+      const data = { location: reqLocation, rooms };
 
-      return res
-        .status(200)
-        .json({ message: "location retrieved", data });
+      return res.status(200).json({ message: "location retrieved", data });
     } catch (error) {
+      console.log(error)
       return res.status(400).json({ message: "An error occurred", error });
     }
   },

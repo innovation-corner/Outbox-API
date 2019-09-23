@@ -1,5 +1,6 @@
 const Booking = require("../models/booking");
 const Attendee = require("../models/attendee");
+const Room = require("../models/room");
 const { Op } = require("sequelize");
 const moment = require("moment");
 
@@ -23,6 +24,13 @@ module.exports = {
       if (start <= moment().toDate()) {
         return res.status(400).json({
           message: "Invalid time"
+        });
+      }
+
+      const room = await Room.findOne({ where: { id } });
+      if (!room) {
+        return res.status(400).json({
+          message: "Invalid room"
         });
       }
 
@@ -107,9 +115,9 @@ module.exports = {
 
       let bookings = await Booking.findAll({ query });
 
-      bookings = await bookings.filter(book=>{
-        return book.id !== id
-      })
+      bookings = await bookings.filter(book => {
+        return book.id !== id;
+      });
 
       if (bookings.length) {
         await bookings.forEach(booking => {

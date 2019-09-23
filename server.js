@@ -18,16 +18,16 @@ app.use(bodyParser.json());
 const router = require("./routes");
 
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+// });
 
 app.use("/api/v1/auth", router.authRouter);
 app.use("/api/v1/user",passport.authenticate('jwt', { session: false }), router.userRouter);
 app.use("/api/v1/book",passport.authenticate('jwt', { session: false }), router.bookingRouter);
 app.use("/api/v1/business",passport.authenticate('jwt', { session: false }), router.businessRouter);
 app.use("/api/v1/location",passport.authenticate('jwt', { session: false }), router.locationRouter);
-// app.use("/api/v1/room",passport.authenticate('jwt', { session: false }), router.roomRouter);
+app.use("/api/v1/room",passport.authenticate('jwt', { session: false }), router.roomRouter);
 
 /** starting up the server */
 app.listen(port, () => {
