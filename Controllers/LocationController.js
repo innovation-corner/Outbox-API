@@ -7,7 +7,7 @@ const _ = require("lodash");
 module.exports = {
   async addLocation(req, res) {
     try {
-      const { name, info, phonenumber, email, admin } = req.body;
+      const { name, info, phoneNumber, email, admin, address } = req.body;
       const { businessId, id } = req.user;
 
       if (req.user.role !== "systemAdmin" && req.user.role !== "subAdmin") {
@@ -18,8 +18,9 @@ module.exports = {
         name,
         info,
         email,
-        phoneNumber: phonenumber,
-        businessId
+        phoneNumber,
+        businessId,
+        address
       };
 
       if (_.isEmpty(email) || _.isEmpty(info) || _.isEmpty(name)) {
@@ -38,7 +39,7 @@ module.exports = {
         await User.update(userData, { where: { id: admin } });
       }
 
-      return res.status(200).json({ message: "location added", location });
+      return res.status(200).json({ message: "location added", location, success: true });
     } catch (err) {
       return res
         .status(400)
