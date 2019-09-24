@@ -86,11 +86,11 @@ module.exports = {
       });
 
       if (!user) {
-        return res.status(401).json({ message: "Invalid Code"});
+        return res.status(401).json({ message: "Invalid Code" });
       }
 
-      user.isVerified = true
-      await user.save()
+      user.isVerified = true;
+      await user.save();
 
       const token = await JwtService.issueToken({
         id: user.id,
@@ -190,6 +190,7 @@ module.exports = {
       }
 
       return res.status(200).json({
+        success: true,
         message: "valid code",
         user
       });
@@ -228,7 +229,7 @@ module.exports = {
 
       return res
         .status(200)
-        .json({ message: "Password reset successfully", user });
+        .json({ message: "Password reset successfully", success: true, user });
     } catch (e) {
       return res.status(400).json({ message: "An error occured" });
     }

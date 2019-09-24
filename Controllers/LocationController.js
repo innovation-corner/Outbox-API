@@ -18,20 +18,16 @@ module.exports = {
         name,
         info,
         email,
-        phoneNumber:phonenumber,
+        phoneNumber: phonenumber,
         businessId
       };
 
-      if (
-        _.isEmpty(email) ||
-        _.isEmpty(info) ||
-        _.isEmpty(name)
-      ) {
+      if (_.isEmpty(email) || _.isEmpty(info) || _.isEmpty(name)) {
         throw new Error("incomplete parameters");
       }
 
       const location = await Location.create(data);
-const user = await User.findOne({where:{id}})
+      const user = await User.findOne({ where: { id } });
 
       if (!user.locationId) {
         await User.update({ locationId: location.id }, { where: { id } });
@@ -44,7 +40,9 @@ const user = await User.findOne({where:{id}})
 
       return res.status(200).json({ message: "location added", location });
     } catch (err) {
-      return res.status(400).json({ message: "An error occurred", err:err.toString() });
+      return res
+        .status(400)
+        .json({ message: "An error occurred", err: err.toString() });
     }
   },
 
@@ -64,7 +62,9 @@ const user = await User.findOne({where:{id}})
 
       const location = await Location.findOne({ where: { id } });
 
-      return res.status(200).json({ message: "location updated", location });
+      return res
+        .status(200)
+        .json({ message: "location updated", location, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }
@@ -82,9 +82,11 @@ const user = await User.findOne({where:{id}})
       const rooms = await Room.findAll({ where: { locationId: id } });
       const data = { location: reqLocation, rooms };
 
-      return res.status(200).json({ message: "location retrieved", data });
+      return res
+        .status(200)
+        .json({ message: "location retrieved", data, success: true });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(400).json({ message: "An error occurred", error });
     }
   },
@@ -102,7 +104,9 @@ const user = await User.findOne({where:{id}})
         where: { id }
       });
 
-      return res.status(200).json({ message: "location deleted" });
+      return res
+        .status(200)
+        .json({ message: "location deleted", success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }
@@ -126,7 +130,9 @@ const user = await User.findOne({where:{id}})
 
       const users = await User.findAll({ where: criteria });
 
-      return res.status(200).json({ message: "users retrieved", users });
+      return res
+        .status(200)
+        .json({ message: "users retrieved", users, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }
@@ -147,7 +153,9 @@ const user = await User.findOne({where:{id}})
       if (!rooms) {
         return res.status(400).json({ message: "no results found" });
       }
-      return res.status(200).json({ message: "rooms retrieved", rooms });
+      return res
+        .status(200)
+        .json({ message: "rooms retrieved", rooms, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occured", error });
     }
