@@ -20,7 +20,9 @@ module.exports = {
       if (!rooms) {
         return res.status(400).json({ message: "no results found" });
       }
-      return res.status(200).json({ message: "locations retrieved", rooms });
+      return res
+        .status(200)
+        .json({ message: "locations retrieved", rooms, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occured", error });
     }
@@ -37,7 +39,9 @@ module.exports = {
       if (!bookings.length) {
         return res.status(400).json({ message: "no bookings at this time" });
       }
-      return res.status(200).json({ message: "bookings retrieved", bookings });
+      return res
+        .status(200)
+        .json({ message: "bookings retrieved", bookings, success: true });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }
@@ -47,7 +51,7 @@ module.exports = {
     try {
       const { id } = req.user;
       const { time, capacity, duration } = req.body;
-      const {locationId}  = await User.findOne({ where: { id } });
+      const { locationId } = await User.findOne({ where: { id } });
 
       const start = moment(time).toDate();
       const end = moment(time)
@@ -70,8 +74,8 @@ module.exports = {
 
       const bookings = await Booking.findAll({ where: criteria });
 
-      console.log(bookings)
-      
+      console.log(bookings);
+
       if (bookings.length) {
         await bookings.forEach(booking => {
           if (
@@ -106,7 +110,9 @@ module.exports = {
         return res.status(400).json({ message: "no results found" });
       }
 
-      return res.status(200).json({ message: "rooms retrieved", rooms });
+      return res
+        .status(200)
+        .json({ message: "rooms retrieved", rooms, success: true });
     } catch (error) {
       return res
         .status(400)
@@ -136,7 +142,9 @@ module.exports = {
         return res.status(400).json({ message: "no bookings" });
       }
 
-      return res.status(200).json({ message: "bookings retrieved", bookings });
+      return res
+        .status(200)
+        .json({ message: "bookings retrieved", bookings, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occured", error });
     }
@@ -148,7 +156,9 @@ module.exports = {
 
       const room = await Room.create(data);
 
-      return res.status(200).json({ message: "room added", room });
+      return res
+        .status(200)
+        .json({ message: "room added", room, success: true });
     } catch (error) {
       return res
         .status(400)

@@ -5,7 +5,7 @@ const Business = require("../models/business");
 const Attendee = require("../models/attendee");
 const JwtService = require("../modules/auth.module");
 const Email = require("../Emails");
-const _ = require('lodash')
+const _ = require("lodash");
 // const { Op } = require("sequelize");
 
 module.exports = {
@@ -62,9 +62,13 @@ module.exports = {
 
       await Email.notifyNewUser(emailData);
 
-      return res.status(200).json({ message: "User added", user });
+      return res
+        .status(200)
+        .json({ message: "User added", user, success: true });
     } catch (err) {
-      return res.status(400).json({ message: "An error occurred", err:err.toString() });
+      return res
+        .status(400)
+        .json({ message: "An error occurred", err: err.toString() });
     }
   },
 
@@ -89,7 +93,9 @@ module.exports = {
       });
       const updatedUser = await User.findOne({ where: { id } });
 
-      return res.status(200).json({ message: "user updated", updatedUser });
+      return res
+        .status(200)
+        .json({ message: "user updated", updatedUser, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }
@@ -105,7 +111,7 @@ module.exports = {
       }
       await User.destroy({ where: { id } });
 
-      return res.status(200).json({ message: "user deleted" });
+      return res.status(200).json({ message: "user deleted", success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }
@@ -146,7 +152,9 @@ module.exports = {
         return res.status(400).json({ message: "user is booked" });
       }
 
-      return res.status(200).json({ message: "user is available" });
+      return res
+        .status(200)
+        .json({ message: "user is available", success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }

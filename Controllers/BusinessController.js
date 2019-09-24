@@ -19,7 +19,7 @@ module.exports = {
 
       return res
         .status(200)
-        .json({ message: "updated business", updatedBusiness });
+        .json({ message: "updated business", success: true, updatedBusiness });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred" });
     }
@@ -43,7 +43,9 @@ module.exports = {
 
       const users = await User.findAll({ where: { criteria } });
 
-      return res.status(200).json({ message: "users retrieved", users });
+      return res
+        .status(200)
+        .json({ message: "users retrieved", success: true, users });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred" });
     }
@@ -60,16 +62,16 @@ module.exports = {
         criteria.push({ name: { [Op.like]: search } });
       }
 
-      console.log('criteria', criteria)
+      console.log("criteria", criteria);
       const locations = await Location.findAll({ where: criteria });
-      console.log('criteria1', criteria)
+      console.log("criteria1", criteria);
       if (!locations) {
         return res.status(400).json({ message: "No saved locations yet" });
       }
 
       return res
         .status(200)
-        .json({ message: "locations retrieved", locations });
+        .json({ message: "locations retrieved", locations, success: true });
     } catch (error) {
       return res.status(400).json({ message: "An error occurred", error });
     }

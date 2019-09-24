@@ -70,7 +70,9 @@ module.exports = {
         });
       }
 
-      return res.status(200).json({ message: "Room booked", booked });
+      return res
+        .status(200)
+        .json({ message: "Room booked", success: true, booked });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }
@@ -85,7 +87,9 @@ module.exports = {
         return res.status(400).json({ message: "booking not found" });
       }
 
-      return res.status(200).json({ message: "booking retrieved", booking });
+      return res
+        .status(200)
+        .json({ message: "booking retrieved", success: true, booking });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }
@@ -143,7 +147,7 @@ module.exports = {
 
       return res
         .status(200)
-        .json({ message: "booking updated", updatedBooking });
+        .json({ message: "booking updated", success: true, updatedBooking });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }
@@ -159,7 +163,9 @@ module.exports = {
         return res.status(400).json({ message: "booking not found" });
       }
       await Booking.destroy({ where: { id } });
-      return res.status(200).json({ message: "booking cancelled" });
+      return res
+        .status(200)
+        .json({ message: "booking cancelled", success: true });
     } catch (error) {
       return res.status(400).json({ message: "an error occured", error });
     }

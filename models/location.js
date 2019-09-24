@@ -13,6 +13,9 @@ const Location = sequelize.define(
     info: {
       type: DataTypes.TEXT
     },
+    address: {
+      type: DataTypes.TEXT
+    },
     email: {
       type: DataTypes.STRING
     },
