@@ -58,6 +58,7 @@ module.exports = {
       data.businessId = newOrg.id;
       const verificationCode = await generateCode(6);
       data.verificationCode = verificationCode;
+      data.isVerified = true;
 
       const user = await User.create(data);
       const emailData = { email, token: verificationCode };
