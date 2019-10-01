@@ -39,7 +39,9 @@ module.exports = {
         await User.update(userData, { where: { id: admin } });
       }
 
-      return res.status(200).json({ message: "location added", location, success: true });
+      return res
+        .status(200)
+        .json({ message: "location added", location, success: true });
     } catch (err) {
       return res
         .status(400)
@@ -81,7 +83,10 @@ module.exports = {
       }
 
       const rooms = await Room.findAll({ where: { locationId: id } });
-      const data = { location: reqLocation, rooms };
+      const admin = await User.findOne({
+        where: { locationId: id, role: "subAdmin" }
+      });
+      const data = { location: reqLocation, rooms, admin };
 
       return res
         .status(200)
