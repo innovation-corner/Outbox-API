@@ -39,7 +39,7 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
       // validate: {
       //   notNull: { msg: "password is required" }
       // }
@@ -52,7 +52,7 @@ const User = sequelize.define(
       defaultValue: false
     },
     role: {
-      type: DataTypes.ENUM("systemAdmin", "subAdmin", "user"),
+      type: DataTypes.ENUM("systemAdmin", "subAdmin", "outboxAdmin", "user"),
       defaultValue: "user"
     }
   },
@@ -82,7 +82,6 @@ User.beforeUpdate(user => {
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8), null);
   }
 });
-
 
 User.belongsTo(Business, {
   foreignKey: "businessId",

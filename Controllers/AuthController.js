@@ -206,7 +206,7 @@ module.exports = {
       const { id } = req.params;
 
       const user = await User.findOne({
-        verificationCode: id
+        where: { verificationCode: id }
       });
       if (!user) {
         return false;
@@ -221,18 +221,17 @@ module.exports = {
         }
       }
 
-      await User.update(
-        {
-          id: req.user.id
-        },
-        data
-      );
+      await User.update(data, {
+        where: { id: user.id }
+      });
 
       return res
         .status(200)
         .json({ message: "Password reset successfully", success: true, user });
     } catch (e) {
-      return res.status(400).json({ message: "An error occured" });
+      return res
+        .status(400)
+        .json({ message: "An error occured", e: e.toString() });
     }
   }
 };
