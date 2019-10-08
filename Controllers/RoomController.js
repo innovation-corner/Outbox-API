@@ -153,6 +153,7 @@ module.exports = {
   async addRoom(req, res) {
     try {
       const data = req.body;
+      data.image = req.file.secure_url;
 
       const room = await Room.create(data);
 
